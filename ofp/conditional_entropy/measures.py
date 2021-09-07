@@ -17,11 +17,11 @@ RESULTPATH = os.path.join(RK_HOME, "../../results")
 
 
 def cond_entropy(filename, chunk, word_offset):
-    """ Call Conditional Entropy class..
+    """ Call Conditional Entropy class.
 
     Args:
-        filename (list): Groups of filenames of documents.
-        chunk (list): Word chunks for document processing, splicing.
+        filename (str): Filename of a text.
+        chunk (int): Word chunks for document processing, splicing.
         word_offset (int): Number of words to skip. Default 1.
 
     Returns:
@@ -31,10 +31,11 @@ def cond_entropy(filename, chunk, word_offset):
               Unigram entropy, Unigram entropy uncertainty
 
     """
-    file_result = [filename, chunk, 500000, 0, 0, 0, 0, 0, 0, 0, 0]
+    file_info = [filename, chunk]
+    file_result = [500000, 0, 0, 0, 0, 0, 0, 0, 0]
 
     # added filename and chunk to return
-    return file_result
+    return file_info + file_result
 
 
 def multi_letters(seq):
