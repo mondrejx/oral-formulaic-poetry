@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # An analysis tool to compare different measures over parallel corpora of Slavic texts; Conditional Entropy (CE),
 # the Type-Token relationship (TTR), word Unigram entropy (UE) and Bigram entropy (BE) as a measure of predictability.
@@ -12,6 +12,8 @@ from itertools import count, product, islice
 
 USER_HOME = os.path.expanduser("~")
 RK_HOME = os.path.dirname(__file__)
+FILEPATH = os.path.join(RK_HOME, "../../files")
+RESULTPATH = os.path.join(RK_HOME, "../../results")
 
 
 def cond_entropy(filename, chunk, word_offset):
@@ -19,7 +21,7 @@ def cond_entropy(filename, chunk, word_offset):
 
     Args:
         filename (list): Groups of filenames of documents.
-        chunks (list): Word chunks for document processing, splicing.
+        chunk (list): Word chunks for document processing, splicing.
         word_offset (int): Number of words to skip. Default 1.
 
     Returns:
@@ -134,9 +136,12 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    filepath = os.path.join(RK_HOME, "../../files")
+    print(USER_HOME)
+    print(RK_HOME)
+    print(FILEPATH)
+    
     # READ FILENAMES FROM files DIRECTORY
-    file_list = listdir(filepath)
+    file_list = listdir(FILEPATH)
     list_of_groups = [file_list]
 
     print(list_of_groups)
@@ -147,8 +152,8 @@ if __name__ == "__main__":
     # chunks = list(range(1000, 300000, 500))
 
     # METHODS
-    methods = ["1-Conditional Entropy", "2-Cond Ent Deviation", "3-Average TTR", "4-TTR Deviation",
-              "5-Bigram Entropy", "6-Bigram Deviation", "7-Unigram Entropy", "8-Unigram Deviation"]
+    methods = ["1-Conditional Entropy", "2-Cond Ent Deviation", "3-Average TTR", "4-TTR Deviation", 
+               "5-Bigram Entropy", "6-Bigram Deviation", "7-Unigram Entropy", "8-Unigram Deviation"]
     # SET WORD-OFFSET
     word_offset = 1
 
@@ -158,7 +163,7 @@ if __name__ == "__main__":
     # ENTER OUTPUT FILE NAME HERE
     result_name = "rukopisy_data_formatted.csv"
 
-    result_filename = os.path.join(RK_HOME, "../../results", result_name)
+    result_filename = os.path.join(RESULTPATH, result_name)
     df.to_csv(result_filename, encoding='utf-8')
 
     end_time = time.time()
