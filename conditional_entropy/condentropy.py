@@ -4,7 +4,7 @@ from collections import Counter
 from math import log
 import sys
 import numpy as np
-from ofp.conditional_entropy.condentropy_util import CondEntropyUtil
+from conditional_entropy.condentropy_util import CondEntropyUtil
 
 
 class CondEntropy:
