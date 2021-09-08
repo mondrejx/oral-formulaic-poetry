@@ -6,7 +6,7 @@ the type-token relationship (TTR), word unigram (UG) and bigram (BG) as a measur
 ## Installation
 
 1. Clone the code from oral-formulaic-poetry [git](https://github.com/ncsa-mo/oral-formulaic-poetry.git) repository in your local folder.
-2. Install required Python packages. Currently `numpy`, a package for scientific computing and `pandas`, a package for data analysis tools.
+2. Install required Python packages. Currently `numpy`, a package for scientific computing, `pandas`, a package for data analysis tools, and a testing package `pytest`.
 3. We recommend using virtual environment, [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (preferred) for python 3.7+. for managing Python environments. Create the environment from the terminal at the project 
 folder (called `ofp` here) and activate it:
 
@@ -20,19 +20,24 @@ folder (called `ofp` here) and activate it:
    ```
    conda install numpy
    conda install pandas
+   conda install pytest
    ```
 
 ## Running
 
-Run from oral-formulaic-poetry folder (master branch): 
-   
+Run from `oral-formulaic-poetry` folder (master branch):
    ```
-   git branch -a git checkout master
+   python3 -m conditional_entropy.measures
    ```
-and
-   ```
-   python3 measures.py
-   (python3 <path_to_oral_formulaic_poetry>/oral-formulaic-poetry/ofp/conditional_entropy/measures.py)
-   ```
+Note that with `-m` command-line flag Python will import a `conditional_entropy` module, then run it as a script which executes the `__main__` with the relative imports working correctly.
       
+The `rukopisy_data_formatted.csv` is saved in results folder. A user can compare it with our final values stored in `rukopisy_data_formatted_fin.csv` file in `tests` folder.
+
 ## Testing
+
+A user can use `pytest` for comparison of calculated and template, our final files. 
+In terminal change directory from your in your `oral-formulaic-poetry` local folder to `test` and run command:
+   ```
+   pytest test_ofc.py --no-header --no-summary
+   ```
+The test should pass if values AND file formatting are identical.

@@ -18,7 +18,7 @@ RESULTPATH = os.path.join(RK_HOME, "../results")
 
 
 def cond_entropy(filename, chunk, word_offset):
-    """ Call Conditional Entropy class.
+    """ Call Conditional Entropy class and arrange the output for csv file formatting.
 
     Args:
         filename (str): Filename of a text.
@@ -33,10 +33,39 @@ def cond_entropy(filename, chunk, word_offset):
 
     """
     file_info = [filename, chunk]
-    file_result = [500000, 0, 0, 0, 0, 0, 0, 0, 0]
+    full_path = os.path.join(FILEPATH, filename)
 
-    # added filename and chunk to return
-    return file_info + file_result
+    cent = CondEntropy(full_path, chunk, word_offset)
+    cent.pre_process_text()
+    file_result = cent.get_volume_entropy()
+
+    # re-arrange outputs for chunk size and word count comparison. Format:
+    # Filename, Chunk, Word count,
+    # Conditional entropy, Conditional entropy uncertainty,
+    # TTR, TTR uncertainty,
+    # Bigram entropy, Bigram entropy uncertainty,
+    # Unigram entropy, Unigram entropy uncertainty
+
+    # word_count
+    file_info.append(file_result[3])
+    # avg_cond_ent
+    file_info.append(file_result[0])
+    # dev_ent
+    file_info.append(file_result[4])
+    # avg_ttr
+    file_info.append(file_result[1])
+    # dev_ttr
+    file_info.append(file_result[2])
+    # bigram_entropy
+    file_info.append(file_result[5])
+    # dev_bigram
+    file_info.append(file_result[7])
+    # unigram_entropy
+    file_info.append(file_result[6])
+    # dev_unigram
+    file_info.append(file_result[8])
+
+    return file_info
 
 
 def multi_letters(seq):
@@ -68,16 +97,6 @@ def formatted_output(groups, chunks, fields, word_offset):
         pd.DataFrame: Resulting values of all four methods.
 
     """
-    # Initialize dictionary for columns
-    dict_for_file = {}
-
-    for item in fields:
-        # Generate keys for dictionary (which will be columns in csv).
-        for number in list(range((len(chunks)) * 10)):
-            dict_for_file[number] = None
-
-    print(dict_for_file)
-
     # Create first column
     first_column = ["File", None]
     for item in fields:
@@ -94,6 +113,7 @@ def formatted_output(groups, chunks, fields, word_offset):
     list_of_columns = [first_column, second_column]
     for group in groups:
         for file in group:
+            print(file)
             data = []
             for chunk in chunks:
                 # Convert to list in order to be able to change list items in for-loop (None).
@@ -119,34 +139,23 @@ def formatted_output(groups, chunks, fields, word_offset):
         list_of_columns.append(empty_column)
 
     column_index_for_df = list(islice(multi_letters("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), len(list_of_columns)))
-    print(column_index_for_df)
 
     dictionary = {}
     for index, item in zip(column_index_for_df, list_of_columns):
         dictionary[index] = item
 
-    for item in list_of_columns:
-        print(item)
-        print(len(item))
-
-    df = pd.DataFrame.from_dict(dictionary)
-    return df
+    df_results = pd.DataFrame.from_dict(dictionary)
+    return df_results
 
 
 # ***********************************************************************
 if __name__ == "__main__":
 
     start_time = time.time()
-
-    print(USER_HOME)
-    print(RK_HOME)
-    print(FILEPATH)
     
     # READ FILENAMES FROM files DIRECTORY
     file_list = listdir(FILEPATH)
     list_of_groups = [file_list]
-
-    print(list_of_groups)
 
     # WORD CHUNK SIZES
     chunks = [100, 300, 500, 1000, 2000, 3000, 5000, 10000, 15000, 20000, 50000, 100000, 300000]
@@ -160,13 +169,12 @@ if __name__ == "__main__":
     word_offset = 1
 
     df = formatted_output(list_of_groups, chunks, methods, word_offset)
-    print(df)
 
     # ENTER OUTPUT FILE NAME HERE
     result_name = "rukopisy_data_formatted.csv"
 
     result_filename = os.path.join(RESULTPATH, result_name)
-    df.to_csv(result_filename, encoding='utf-8')
+    df.to_csv(result_filename, encoding="utf-8")
 
     end_time = time.time()
     elapsed = end_time - start_time
