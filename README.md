@@ -1,7 +1,7 @@
 # Oral formulaic poetry
 
 An analysis tool to compare different measures over parallel corpora of Slavic texts; conditional entropy (CE), 
-the type-token relationship (TTR), word unigram (UG) and bigram (BG) as a measure of predictability.
+the type-token ratio (TTR), word unigram (UG) and bigram (BG) entropies as a measure of predictability.
 
 ## Installation
 
