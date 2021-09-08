@@ -12,8 +12,8 @@ from itertools import count, product, islice
 
 USER_HOME = os.path.expanduser("~")
 RK_HOME = os.path.dirname(__file__)
-FILEPATH = os.path.join(RK_HOME, "../../files")
-RESULTPATH = os.path.join(RK_HOME, "../../results")
+FILEPATH = os.path.join(RK_HOME, "../files")
+RESULTPATH = os.path.join(RK_HOME, "../results")
 
 
 def cond_entropy(filename, chunk, word_offset):
