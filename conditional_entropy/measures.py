@@ -8,6 +8,7 @@ import os
 from os import listdir
 import pandas as pd
 from itertools import count, product, islice
+from conditional_entropy.condentropy import CondEntropy
 
 
 USER_HOME = os.path.expanduser("~")
